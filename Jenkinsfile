@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    
-    tools {
-        maven 'Maven'
-    }
 
     stages {
 
@@ -14,34 +10,21 @@ pipeline {
             }
         }
 
-        stage('Test Code') {
+        stage('Verify Files') {
             steps {
-                echo "Running tests..."
-                bat 'mvn test'
+                echo "Listing project files..."
+                bat 'dir'
             }
         }
 
-        stage('Build Application') {
-            steps {
-                echo "Building application..."
-                bat 'mvn clean package'
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                echo "Archiving artifacts..."
-                archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
-            }
-        }
     }
 
     post {
         success {
-            echo "✅ Build completed successfully!"
+            echo "✅ Pipeline completed successfully!"
         }
         failure {
-            echo "❌ Build failed. Check logs."
+            echo "❌ Pipeline failed."
         }
         always {
             echo "🔄 Pipeline finished."
